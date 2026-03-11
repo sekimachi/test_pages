@@ -4,19 +4,44 @@ body{
     margin-top: 100px;
 }
 
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.timer-container{
+    position: relative;
+    width: 220px;
+    margin: auto;
+}
+
+.timer-svg{
+    transform: rotate(-90deg);
+}
+
+circle{
+    fill: none;
+    stroke-width: 12;
+}
+
+.bg-circle{
+    stroke: #eee;
+}
+
+.progress-circle{
+    stroke: #3498db;
+    stroke-linecap: round;
+    stroke-dasharray: 628;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
 }
 
 #timer{
-    font-size: 80px;
-    margin-bottom: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    font-weight: bold;
 }
 
 button{
+    margin-top: 30px;
     font-size: 20px;
     padding: 10px 20px;
-    cursor: pointer;
 }

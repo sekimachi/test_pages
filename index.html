@@ -2,18 +2,25 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>1分タイマー</title>
+<title>円形タイマー</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+<div class="timer-container">
+
+    <svg class="timer-svg" width="220" height="220">
+        <circle class="bg-circle" cx="110" cy="110" r="100"></circle>
+        <circle class="progress-circle" cx="110" cy="110" r="100"></circle>
+    </svg>
+
     <div id="timer">01:00</div>
-    <button id="startBtn">開始</button>
+
 </div>
 
-<script src="script.js"></script>
+<button id="startBtn">開始</button>
 
+<script src="script.js"></script>
 </body>
 </html>
