@@ -1,4 +1,4 @@
-let time = 60;
+let time = 0;
 let interval;
 
 const timer = document.getElementById("timer");
@@ -9,13 +9,14 @@ const radius = 100;
 const circumference = 2 * Math.PI * radius;
 
 circle.style.strokeDasharray = circumference;
+circle.style.strokeDashoffset = circumference;
 
 startBtn.addEventListener("click", startTimer);
 
 function startTimer(){
 
     clearInterval(interval);
-    time = 60;
+    time = 0;
 
     interval = setInterval(() => {
 
@@ -29,11 +30,11 @@ function startTimer(){
         let progress = time / 60;
         circle.style.strokeDashoffset = circumference * (1 - progress);
 
-        time--;
+        time++;
 
-        if(time < 0){
+        if(time > 60){
             clearInterval(interval);
-            alert("時間終了！");
+            alert("1分経過！");
         }
 
     },1000);

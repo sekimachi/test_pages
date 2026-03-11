@@ -27,7 +27,7 @@ circle{
     stroke: #3498db;
     stroke-linecap: round;
     stroke-dasharray: 628;
-    stroke-dashoffset: 0;
+    stroke-dashoffset: 628;
     transition: stroke-dashoffset 1s linear;
 }
 
