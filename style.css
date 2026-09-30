@@ -475,3 +475,413 @@ button {
     font-size: 18px;
   }
 }
+
+
+/* =========================================================
+   脱出ゲーム演出アニメーション
+========================================================= */
+
+/* ページ切り替え */
+.content.page-enter {
+  animation: pageEnter 0.42s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 問題カード登場 */
+.question-card.card-enter {
+  animation: cardEnter 0.5s cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 問題一覧ボタン */
+.question-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.question-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.06);
+  transform: translateX(-110%);
+  transition: transform .25s ease;
+}
+
+.question-button:active::after {
+  transform: translateX(0);
+}
+
+.question-button.just-unlocked {
+  animation: unlockButton 0.8s cubic-bezier(.2,1.5,.4,1);
+}
+
+@keyframes unlockButton {
+  0% {
+    transform: scale(.88);
+    opacity: .35;
+  }
+  45% {
+    transform: scale(1.08);
+  }
+  70% {
+    transform: scale(.96);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ロックアイコンの揺れ */
+.lock-shake {
+  animation: lockShake .65s ease;
+}
+
+@keyframes lockShake {
+  0%, 100% { transform: rotate(0); }
+  15% { transform: rotate(-16deg); }
+  30% { transform: rotate(13deg); }
+  45% { transform: rotate(-10deg); }
+  60% { transform: rotate(7deg); }
+  75% { transform: rotate(-3deg); }
+}
+
+/* 解錠演出 */
+.unlock-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 10, 9, .78);
+  backdrop-filter: blur(7px);
+  animation: overlayIn .25s ease;
+}
+
+.unlock-overlay.hide {
+  animation: overlayOut .35s ease forwards;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes overlayOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.unlock-box {
+  position: relative;
+  width: min(520px, 82vw);
+  padding: 42px 35px 38px;
+  border: 1px solid #4f8c73;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #17241f, #111817);
+  box-shadow:
+    0 0 0 1px rgba(85,201,149,.08),
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 70px rgba(85,201,149,.13);
+  text-align: center;
+  animation: unlockBox .65s cubic-bezier(.16,1.4,.3,1);
+}
+
+@keyframes unlockBox {
+  0% {
+    opacity: 0;
+    transform: scale(.65) translateY(30px);
+  }
+  60% {
+    transform: scale(1.06) translateY(-4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.unlock-lock {
+  position: relative;
+  width: 92px;
+  height: 110px;
+  margin: 0 auto 20px;
+}
+
+.lock-body {
+  position: absolute;
+  left: 17px;
+  bottom: 4px;
+  width: 58px;
+  height: 56px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, #c7a95d, #80652b);
+  box-shadow: inset 0 3px 5px rgba(255,255,255,.3);
+}
+
+.lock-shackle {
+  position: absolute;
+  left: 29px;
+  top: 5px;
+  width: 34px;
+  height: 55px;
+  border: 8px solid #b8964d;
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+  transform-origin: 50% 100%;
+}
+
+.unlock-lock.open .lock-shackle {
+  animation: shackleOpen .65s cubic-bezier(.16,1.3,.3,1) forwards;
+}
+
+@keyframes shackleOpen {
+  0% {
+    transform: rotate(0) translate(0,0);
+  }
+  55% {
+    transform: rotate(-22deg) translate(-1px,-3px);
+  }
+  100% {
+    transform: rotate(-42deg) translate(-5px,-13px);
+  }
+}
+
+.lock-keyhole {
+  position: absolute;
+  left: 42px;
+  top: 68px;
+  width: 8px;
+  height: 15px;
+  border-radius: 6px;
+  background: #263027;
+}
+
+.unlock-spark {
+  position: absolute;
+  inset: -35px;
+  pointer-events: none;
+}
+
+.unlock-spark span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5px;
+  height: 18px;
+  border-radius: 5px;
+  background: #8af0bd;
+  opacity: 0;
+}
+
+.unlock-spark span:nth-child(1) { --r: 0deg; transform: rotate(0deg) translateY(-75px); }
+.unlock-spark span:nth-child(2) { --r: 45deg; transform: rotate(45deg) translateY(-75px); }
+.unlock-spark span:nth-child(3) { --r: 90deg; transform: rotate(90deg) translateY(-75px); }
+.unlock-spark span:nth-child(4) { --r: 135deg; transform: rotate(135deg) translateY(-75px); }
+.unlock-spark span:nth-child(5) { --r: 180deg; transform: rotate(180deg) translateY(-75px); }
+.unlock-spark span:nth-child(6) { --r: 225deg; transform: rotate(225deg) translateY(-75px); }
+.unlock-spark span:nth-child(7) { --r: 270deg; transform: rotate(270deg) translateY(-75px); }
+.unlock-spark span:nth-child(8) { --r: 315deg; transform: rotate(315deg) translateY(-75px); }
+
+.unlock-spark.play span {
+  animation: spark .7s ease-out forwards;
+}
+
+@keyframes spark {
+  0% {
+    opacity: 0;
+    transform-origin: 0 75px;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--r, 0deg)) translateY(-105px);
+  }
+}
+
+.unlock-title {
+  margin: 0;
+  color: #86e9b5;
+  font-size: 30px;
+  letter-spacing: 3px;
+}
+
+.unlock-subtitle {
+  margin: 12px 0 0;
+  color: #c3ceca;
+  font-size: 17px;
+}
+
+.unlock-next {
+  margin-top: 25px;
+  color: #778681;
+  font-size: 13px;
+}
+
+/* 正解時のカード発光 */
+.question-card.correct-flash {
+  animation: correctFlash .65s ease;
+}
+
+@keyframes correctFlash {
+  0% {
+    box-shadow: 0 0 0 rgba(85,201,149,0);
+  }
+  35% {
+    box-shadow:
+      0 0 0 2px rgba(85,201,149,.55),
+      0 0 55px rgba(85,201,149,.35);
+  }
+  100% {
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  }
+}
+
+/* 正解マーク */
+.solved-label {
+  animation: solvedPop .45s cubic-bezier(.2,1.5,.4,1);
+}
+
+@keyframes solvedPop {
+  from {
+    opacity: 0;
+    transform: scale(.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 不正解時の揺れ */
+.answer-area.wrong {
+  animation: wrongShake .38s ease;
+}
+
+@keyframes wrongShake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(9px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(4px); }
+}
+
+/* 解答確定時の入力欄 */
+.answer-input.locked-success {
+  animation: inputLock .5s ease;
+}
+
+@keyframes inputLock {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.025); }
+  100% { transform: scale(1); }
+}
+
+/* 次へボタン */
+.next-button {
+  animation: nextAppear .45s .1s both cubic-bezier(.2,1.4,.4,1);
+}
+
+@keyframes nextAppear {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 全問クリア */
+.clear-page {
+  animation: clearIn .8s cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes clearIn {
+  from {
+    opacity: 0;
+    transform: scale(.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.clear-icon {
+  animation: clearUnlock 1s cubic-bezier(.16,1.5,.3,1);
+}
+
+@keyframes clearUnlock {
+  0% { transform: rotate(-20deg) scale(.3); opacity: 0; }
+  50% { transform: rotate(12deg) scale(1.15); opacity: 1; }
+  100% { transform: rotate(0) scale(1); }
+}
+
+/* 小さなパーティクル */
+.clear-page::before,
+.clear-page::after {
+  content: "✦";
+  position: fixed;
+  color: #72e4ac;
+  font-size: 25px;
+  animation: floatParticle 2.5s ease-in-out infinite;
+}
+
+.clear-page::before {
+  left: 25%;
+  top: 28%;
+}
+
+.clear-page::after {
+  right: 25%;
+  top: 40%;
+  animation-delay: .8s;
+}
+
+@keyframes floatParticle {
+  0%,100% {
+    opacity: .2;
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-22px) rotate(25deg);
+  }
+}
+
+/* 動きを減らす設定の端末にも配慮 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
