@@ -264,6 +264,14 @@ function renderQuestion() {
     </section>
   `;
 
+  // 画面と問題カードを滑らかに登場させる
+  content.classList.add("page-enter");
+
+  const renderedCard = content.querySelector(".question-card");
+  if (renderedCard) {
+    renderedCard.classList.add("card-enter");
+  }
+
   if (!solved) {
     setupAnswerInput();
   } else {
@@ -306,12 +314,18 @@ function checkAnswer() {
   const input = document.getElementById("answerInput");
   const button = document.getElementById("submitButton");
   const message = document.getElementById("message");
+  const answerArea = document.querySelector(".answer-area");
+  const card = document.querySelector(".question-card");
 
   const userAnswer = input.value;
 
   if (userAnswer.trim() === "") {
     message.className = "message incorrect";
     message.textContent = "解答を入力してください。";
+
+    answerArea.classList.remove("wrong");
+    void answerArea.offsetWidth;
+    answerArea.classList.add("wrong");
     return;
   }
 
@@ -331,21 +345,108 @@ function checkAnswer() {
     input.disabled = true;
     button.disabled = true;
 
+    input.classList.add("locked-success");
+
     message.className = "message correct";
     message.textContent = "✓ 正解！";
 
+    if (card) {
+      card.classList.remove("correct-flash");
+      void card.offsetWidth;
+      card.classList.add("correct-flash");
+    }
+
     showToast("正解しました！");
 
+    // まず現在の問題を正解済みに更新
     renderSidebar();
 
+    // 次の問題がある場合は「鍵が外れる」演出
+    if (currentQuestion < QUESTIONS.length - 1) {
+      setTimeout(() => {
+        showUnlockAnimation(currentQuestion + 1);
+      }, 420);
+    } else {
+      // 全問クリア
+      setTimeout(() => {
+        showClearPage();
+      }, 850);
+    }
+
+    // 入力欄を固定した状態を維持
     setTimeout(() => {
-      renderQuestion();
-    }, 500);
+      if (currentPage === "question") {
+        renderQuestion();
+      }
+    }, 900);
 
   } else {
     message.className = "message incorrect";
     message.textContent = "✕ 不正解です。もう一度考えてみよう。";
+
+    answerArea.classList.remove("wrong");
+    void answerArea.offsetWidth;
+    answerArea.classList.add("wrong");
   }
+}
+
+function showUnlockAnimation(nextIndex) {
+  // 次の問題を先に解放する
+  state.currentQuestion = currentQuestion;
+  saveState();
+
+  const overlay = document.createElement("div");
+  overlay.className = "unlock-overlay";
+
+  overlay.innerHTML = `
+    <div class="unlock-box">
+      <div class="unlock-lock open">
+        <div class="unlock-spark play">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="lock-shackle"></div>
+        <div class="lock-body"></div>
+        <div class="lock-keyhole"></div>
+      </div>
+
+      <h2 class="unlock-title">LOCK UNLOCKED</h2>
+      <p class="unlock-subtitle">
+        ${escapeHtml(QUESTIONS[nextIndex].title)} が解放されました
+      </p>
+      <div class="unlock-next">次の問題へ進めます</div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  // サイドバーの次問題をアニメーション
+  renderSidebar();
+
+  const buttons = document.querySelectorAll(".question-button");
+  const nextButton = buttons[nextIndex];
+
+  if (nextButton) {
+    nextButton.classList.add("just-unlocked");
+  }
+
+  // 一定時間後に演出を閉じる
+  setTimeout(() => {
+    overlay.classList.add("hide");
+
+    setTimeout(() => {
+      overlay.remove();
+
+      // 解放された問題を自動的に表示
+      currentQuestion = nextIndex;
+      currentPage = "question";
+      state.currentQuestion = nextIndex;
+      saveState();
+
+      renderSidebar();
+      renderQuestion();
+    }, 350);
+  }, 1500);
 }
 
 function renderAnswers() {
