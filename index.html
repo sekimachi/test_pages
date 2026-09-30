@@ -1,26 +1,57 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>カウントアップタイマー</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>学園祭 脱出ゲーム</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <div class="app">
 
-<div class="timer-container">
+    <!-- 左サイドバー -->
+    <aside class="sidebar">
+      <div class="sidebar-title">
+        <div class="small-title">SCHOOL FESTIVAL</div>
+        <h1>脱出ゲーム</h1>
+      </div>
 
-    <svg class="timer-svg" width="220" height="220">
-        <circle class="bg-circle" cx="110" cy="110" r="100"></circle>
-        <circle class="progress-circle" cx="110" cy="110" r="100"></circle>
-    </svg>
+      <div class="progress">
+        <div class="progress-text">
+          <span>進行状況</span>
+          <span id="progressText">0 / 9</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progressBar"></div>
+        </div>
+      </div>
 
-    <div id="timer">00:00</div>
+      <nav id="questionList" class="question-list">
+        <!-- JavaScriptで生成 -->
+      </nav>
 
-</div>
+      <button id="answersButton" class="sidebar-button">
+        <span>📖</span>
+        <span>過去の解答</span>
+      </button>
 
-<button id="startBtn">開始</button>
+      <button id="resetButton" class="reset-button">
+        進行状況をリセット
+      </button>
+    </aside>
 
-<script src="script.js"></script>
+    <!-- メイン画面 -->
+    <main class="main">
+      <div id="content" class="content">
+        <!-- JavaScriptで表示 -->
+      </div>
+    </main>
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
